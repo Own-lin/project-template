@@ -1,4 +1,4 @@
-package com.ader1y.core;
+package com.ader1y.template.core;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
