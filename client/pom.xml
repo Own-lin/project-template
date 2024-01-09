@@ -47,6 +47,11 @@
             <artifactId>mockito-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.ader1y</groupId>
+            <artifactId>model</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -54,7 +59,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>${version.spring-boot}</version>
                 <configuration>
                     <excludes>
                         <exclude>

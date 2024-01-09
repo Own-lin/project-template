@@ -32,7 +32,6 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.14.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -51,7 +50,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>${version.spring-boot}</version>
                 <configuration>
                     <excludes>
                         <exclude>

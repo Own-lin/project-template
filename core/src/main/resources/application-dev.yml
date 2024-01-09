@@ -1,0 +1,6 @@
+
+datasource:
+  config-path: classpath:/static
+
+LOG_Path: ./logs
+
