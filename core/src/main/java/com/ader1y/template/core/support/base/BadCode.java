@@ -32,6 +32,12 @@ public enum BadCode implements BaseCode{
 
     @Override
     public void throwEx(Object... args) {
-        throw new BadRequestException(this, MessageFormat.format(this.getBizCode(), args));
+        String message = this.getBizCode();
+        try{
+            message = MessageFormat.format(this.getBizCode(), args);
+        }catch (IllegalArgumentException ex){
+            BadCode.UN_EXPECTED.throwEx();
+        }
+        throw new BadRequestException(this, message);
     }
 }

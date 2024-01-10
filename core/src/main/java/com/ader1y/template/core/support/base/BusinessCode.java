@@ -5,9 +5,14 @@ import lombok.Getter;
 
 import java.text.MessageFormat;
 
+/**
+ * 业务异常错误码的枚举以及异常处理(该类下所有异常都应该为1xxx码).</p>
+ * 可通过传入参数来自定义异常信息.
+ */
 @Getter
 public enum BusinessCode implements BaseCode{
 
+    DUPLICATE(1001, "已存在相同{0}")
 
 
     ;
@@ -28,7 +33,13 @@ public enum BusinessCode implements BaseCode{
 
     @Override
     public void throwEx(Object... args) {
-        throw new BusinessException(this, MessageFormat.format(this.getBizCode(), args));
+        String message = this.getBizCode();
+        try{
+            message = MessageFormat.format(this.getBizCode(), args);
+        }catch (IllegalArgumentException ex){
+            BadCode.UN_EXPECTED.throwEx();
+        }
+        throw new BusinessException(this, message);
     }
 
 }

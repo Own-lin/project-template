@@ -3,10 +3,15 @@ package com.ader1y.template.core.support;
 
 import com.ader1y.template.core.support.base.BadRequestException;
 import com.ader1y.template.core.support.base.BusinessException;
+import com.ader1y.template.core.support.base.ExceptionLevel;
 import com.ader1y.template.core.support.base.R;
+import com.ader1y.template.core.support.event.WarningEvent;
+import jakarta.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -15,31 +20,54 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    @Resource
+    private ApplicationEventPublisher eventPublisher;
+
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public R<String> handle(Exception e) {
-        e.printStackTrace();
+        String stackTrace = getStackTrace(e);
+        warningLog(e, stackTrace);
+        sendWarningEvent(ExceptionLevel.HIGHEST, stackTrace);
         return R.fail(500, "哎呀 出错了～ 请等会再试吧❀");
     }
 
     @ResponseBody
     @ExceptionHandler(value = BusinessException.class)
     public R<String> handle(BusinessException e) {
-        warning(e);
+        String stackTrace = getStackTrace(e);
+        warningLog(e, stackTrace);
         return R.fail(e.getCodeEnum());
     }
 
     @ResponseBody
     @ExceptionHandler(value = BadRequestException.class)
     public R<String> handle(BadRequestException e) {
-        warning(e);
+        String stackTrace = getStackTrace(e);
+        warningLog(e, stackTrace);
+        sendWarningEvent(ExceptionLevel.BUSINESS, stackTrace);
         return R.fail(e.getCodeEnum());
+    }
+
+    private static String getStackTrace(final Throwable e){
+        String stackTrace = ExceptionUtils.getStackTrace(e);
+        String[] stackTraceArray = StringUtils.split(stackTrace, "\n", 7);
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < 6; i++){
+            sb.append(stackTraceArray[i]).append("\n");
+        }
+
+        return sb.toString();
     }
 
     private static final String LOG_MESSAGE = "\n Exception message: {};\n StackTrace: {}";
 
-    private static void warning(Exception e){
-        LOG.warn(LOG_MESSAGE, e.getMessage(), ExceptionUtils.getStackTrace(e));
+    private static void warningLog(Exception e, String stackTrace){
+        LOG.warn(LOG_MESSAGE, e.getMessage(), stackTrace);
+    }
+
+    private void sendWarningEvent(ExceptionLevel exLevel, String stackTrace){
+        eventPublisher.publishEvent(new WarningEvent(exLevel, stackTrace));
     }
 
 }
