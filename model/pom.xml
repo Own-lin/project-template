@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>model</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${parent.version}</version>
 
     <name>model</name>
     <description>model</description>
