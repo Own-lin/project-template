@@ -3,7 +3,9 @@ server:
 
 spring:
   profiles:
+    # 默认激活dev环境
     active: dev
+    # 包含了通用的context环境
     include: context
   servlet:
     multipart:
@@ -12,6 +14,10 @@ spring:
       enabled: true
   application:
     name: template
+
+# 你的数据库连接信息所在的位置
+datasource:
+  config-path: classpath:/static
 
 mybatis:
   mapper-locations:

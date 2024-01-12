@@ -1,7 +1,7 @@
 package com.ader1y.template.core.support.event;
 
 
-import com.ader1y.template.core.support.base.ExceptionLevel;
+import com.ader1y.template.model.base.ExceptionLevel;
 import lombok.Data;
 
 @Data

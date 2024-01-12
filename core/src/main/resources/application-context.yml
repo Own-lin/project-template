@@ -1,0 +1,4 @@
+template:
+  client:
+    host: template.com
+    url: http://localhost:${server.port}
