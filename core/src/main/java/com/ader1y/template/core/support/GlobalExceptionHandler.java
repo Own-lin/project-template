@@ -4,7 +4,6 @@ package com.ader1y.template.core.support;
 import com.ader1y.template.core.support.event.WarningEvent;
 import com.ader1y.template.model.base.*;
 import jakarta.annotation.Resource;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -61,9 +60,14 @@ public class GlobalExceptionHandler {
     }
 
     private static String getStackTrace(final Throwable e){
-        String stackTrace = ExceptionUtils.getStackTrace(e);
+        StringBuilder sb = new StringBuilder();
+        StackTraceElement[] stacks = e.getStackTrace();
+        for (int i = 0; i < 6; i++){
+            sb.append(stacks[i].toString()).append("\n");
+        }
+        sb.append("......");
 
-        return stackTrace.substring(0, 315) + "......";
+        return sb.toString();
     }
 
     private static final String LOG_MESSAGE = "\n Exception message: {};\n StackTrace: {}";
