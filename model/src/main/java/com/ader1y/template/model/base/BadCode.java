@@ -14,8 +14,9 @@ public enum BadCode implements BaseCode{
 
     LENGTH_LIMIT(2002, "长度不在限制内"),
 
-    EXPORT_ERROR(2003, "导出暂不可用, 请稍后再试")
+    EXPORT_ERROR(2003, "导出暂不可用, 请稍后再试"),
 
+    GET_IMAGE_ERROR(2004, "获取图片失败: {0}")
     ;
 
     private final int code;
