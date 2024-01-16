@@ -2,6 +2,8 @@ server:
   port: 9091
 
 spring:
+  application:
+    name: template
   profiles:
     # 默认激活dev环境
     active: dev
@@ -12,8 +14,6 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
       enabled: true
-  application:
-    name: template
 
 # 你的数据库连接信息所在的位置
 datasource:
@@ -24,3 +24,6 @@ mybatis:
     - "classpath:mapper/**/*.xml"
   configuration:
     mapUnderscoreToCamelCase: true
+logging:
+  level:
+    web: debug

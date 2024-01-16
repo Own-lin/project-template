@@ -1,3 +1,7 @@
+spring:
+  devtools:
+    add-properties: true
+
 
 datasource:
   config-path: classpath:/static
