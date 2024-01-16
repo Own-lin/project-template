@@ -8,18 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @Resource
     private ApplicationEventPublisher eventPublisher;
 
-    @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public R<String> handle(Exception e) {
         String stackTrace = getStackTrace(e);
@@ -28,7 +26,6 @@ public class GlobalExceptionHandler {
         return R.fail(500, "哎呀 出错了～ 请等会再试吧❀");
     }
 
-    @ResponseBody
     @ExceptionHandler(value = BusinessException.class)
     public R<String> handle(BusinessException e) {
         //  业务异常为可预期的, 只需要记录info日志
@@ -36,7 +33,6 @@ public class GlobalExceptionHandler {
         return R.fail(e.getCodeEnum());
     }
 
-    @ResponseBody
     @ExceptionHandler(value = BadRequestException.class)
     public R<String> handle(BadRequestException e) {
         String stackTrace = getStackTrace(e);
@@ -48,7 +44,6 @@ public class GlobalExceptionHandler {
     /**
      * 对JSR-303(@Valid @Validation等)规则中的异常进行捕获
      */
-    @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public R<String> handlerEx(MethodArgumentNotValidException e){
         //  可预期异常, 只需要记录info日志

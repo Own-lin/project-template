@@ -27,3 +27,4 @@ mybatis:
 logging:
   level:
     web: debug
+    com.ader1y.template: debug
