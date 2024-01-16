@@ -1,5 +1,7 @@
 package com.ader1y.template.model.base;
 
+import java.text.MessageFormat;
+
 public interface BaseCode {
 
 
@@ -10,5 +12,9 @@ public interface BaseCode {
     void throwEx();
 
     void throwEx(Object... args);
+
+    default String formatBizCode(Object... args) {
+        return MessageFormat.format(getBizCode(), args);
+    }
 
 }

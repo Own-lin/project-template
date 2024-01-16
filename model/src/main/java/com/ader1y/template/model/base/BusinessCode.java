@@ -12,7 +12,9 @@ import java.text.MessageFormat;
 @Getter
 public enum BusinessCode implements BaseCode{
 
-    DUPLICATE(1001, "已存在相同{0}")
+    DUPLICATE(1001, "已存在相同{0}"),
+
+    UN_SUPPORT_PARAM(1002, "请求参数错误: {0}")
 
 
     ;

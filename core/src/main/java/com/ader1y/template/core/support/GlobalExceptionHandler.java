@@ -2,16 +2,15 @@ package com.ader1y.template.core.support;
 
 
 import com.ader1y.template.core.support.event.WarningEvent;
-import com.ader1y.template.model.base.BadRequestException;
-import com.ader1y.template.model.base.BusinessException;
-import com.ader1y.template.model.base.ExceptionLevel;
-import com.ader1y.template.model.base.R;
+import com.ader1y.template.model.base.*;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -35,8 +34,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = BusinessException.class)
     public R<String> handle(BusinessException e) {
-        String stackTrace = getStackTrace(e);
-        warningLog(e, stackTrace);
+        infoLog(e);
         return R.fail(e.getCodeEnum());
     }
 
@@ -47,6 +45,19 @@ public class GlobalExceptionHandler {
         warningLog(e, stackTrace);
         sendWarningEvent(ExceptionLevel.BUSINESS, stackTrace);
         return R.fail(e.getCodeEnum());
+    }
+
+    /**
+     * 对JSR-303(@Valid @Validation等)规则中的异常进行捕获
+     */
+    @ResponseBody
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public R<String> handlerEx(HttpServletRequest request, MethodArgumentNotValidException e){
+        BusinessCode code = BusinessCode.UN_SUPPORT_PARAM;
+        String source = e.getAllErrors().get(0).getDefaultMessage();
+        LOG.info(code.formatBizCode(source));
+
+        return R.fail(code.getCode(), source);
     }
 
     private static String getStackTrace(final Throwable e){
@@ -61,6 +72,10 @@ public class GlobalExceptionHandler {
     }
 
     private static final String LOG_MESSAGE = "\n Exception message: {};\n StackTrace: {}";
+
+    private static void infoLog(Exception e){
+        LOG.info(e.getMessage());
+    }
 
     private static void warningLog(Exception e, String stackTrace){
         LOG.warn(LOG_MESSAGE, e.getMessage(), stackTrace);
