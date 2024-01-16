@@ -1,6 +1,6 @@
 package com.ader1y.template.core.support;
 
-import com.ader1y.template.core.support.base.BadCode;
+import com.ader1y.template.model.base.BadCode;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import jakarta.servlet.http.HttpServletResponse;
