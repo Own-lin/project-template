@@ -12,7 +12,9 @@ public enum BadCode implements BaseCode{
 
     UN_EXPECTED(2001, "请不要使用非预期的操作"),
 
-    LENGTH_LIMIT(2002, "长度不在限制内")
+    LENGTH_LIMIT(2002, "长度不在限制内"),
+
+    EXPORT_ERROR(2003, "导出暂不可用, 请稍后再试")
 
     ;
 
