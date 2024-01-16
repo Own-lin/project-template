@@ -4,8 +4,6 @@ package com.ader1y.template.core.support;
 import com.ader1y.template.core.support.event.WarningEvent;
 import com.ader1y.template.model.base.*;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +32,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = BusinessException.class)
     public R<String> handle(BusinessException e) {
+        //  业务异常为可预期的, 只需要记录info日志
         infoLog(e);
         return R.fail(e.getCodeEnum());
     }
@@ -52,7 +51,8 @@ public class GlobalExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public R<String> handlerEx(HttpServletRequest request, MethodArgumentNotValidException e){
+    public R<String> handlerEx(MethodArgumentNotValidException e){
+        //  可预期异常, 只需要记录info日志
         BusinessCode code = BusinessCode.UN_SUPPORT_PARAM;
         String source = e.getAllErrors().get(0).getDefaultMessage();
         LOG.info(code.formatBizCode(source));
@@ -62,13 +62,8 @@ public class GlobalExceptionHandler {
 
     private static String getStackTrace(final Throwable e){
         String stackTrace = ExceptionUtils.getStackTrace(e);
-        String[] stackTraceArray = StringUtils.split(stackTrace, "\n", 7);
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < 6; i++){
-            sb.append(stackTraceArray[i]).append("\n");
-        }
 
-        return sb.toString();
+        return stackTrace.substring(0, 315) + "......";
     }
 
     private static final String LOG_MESSAGE = "\n Exception message: {};\n StackTrace: {}";
