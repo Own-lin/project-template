@@ -1,4 +1,4 @@
-package com.ader1y.template.core.support.base;
+package com.ader1y.template.model.base;
 
 public class BaseException extends RuntimeException{
 

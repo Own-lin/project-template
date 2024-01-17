@@ -1,6 +1,11 @@
+spring:
+  devtools:
+    add-properties: true
+
 
 datasource:
-  config-path: classpath:/static
+  config-path: classpath:static
+
 
 LOG_PATH: /.logs
 

@@ -1,4 +1,4 @@
-package com.ader1y.template.core.support.base;
+package com.ader1y.template.model.base;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import lombok.Data;
 public class R<T> {
 
 
-    private int code;
+    private Integer code;
 
     private T data;
 
@@ -15,12 +15,14 @@ public class R<T> {
      */
     private String businessCode;
 
+    public R(){}
+
     private R(T data){
         this.code = 200;
         this.data = data;
     }
 
-    private R(int code, String bizCode){
+    private R(Integer code, String bizCode){
         this.code = code;
         this.businessCode = bizCode;
     }
@@ -29,7 +31,7 @@ public class R<T> {
         return new R<>(data);
     }
 
-    public static <T> R<T> fail(int code, String businessCode){
+    public static <T> R<T> fail(Integer code, String businessCode){
         return new R<>(code, businessCode);
     }
 

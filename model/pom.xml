@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>model</artifactId>
-    <version>${parent.version}</version>
+    <version>${project.parent.version}</version>
 
     <name>model</name>
     <description>model</description>

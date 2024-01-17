@@ -1,18 +1,21 @@
-package com.ader1y.template.core.support.base;
+package com.ader1y.template.model.base;
+
 
 import lombok.Getter;
 
 import java.text.MessageFormat;
 
 /**
- * 糟糕(恶意)请求的业务异常码.
+ * 业务异常错误码的枚举以及异常处理(该类下所有异常都应该为1xxx码).</p>
+ * 可通过传入参数来自定义异常信息.
  */
 @Getter
-public enum BadCode implements BaseCode{
+public enum BusinessCode implements BaseCode{
 
-    UN_EXPECTED(2001, "请不要使用非预期的操作"),
+    DUPLICATE(1001, "已存在相同{0}"),
 
-    LENGTH_LIMIT(2002, "长度不在限制内")
+    UN_SUPPORT_PARAM(1002, "请求参数错误: {0}")
+
 
     ;
 
@@ -20,14 +23,14 @@ public enum BadCode implements BaseCode{
 
     private final String bizCode;
 
-    BadCode(int code, String bizCode) {
+    BusinessCode(int code, String bizCode) {
         this.code = code;
         this.bizCode = bizCode;
     }
 
     @Override
     public void throwEx() {
-        throw new BadRequestException(this);
+        throw new BusinessException(this);
     }
 
     @Override
@@ -38,6 +41,7 @@ public enum BadCode implements BaseCode{
         }catch (IllegalArgumentException ex){
             BadCode.UN_EXPECTED.throwEx();
         }
-        throw new BadRequestException(this, message);
+        throw new BusinessException(this, message);
     }
+
 }

@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>core</artifactId>
-    <version>${parent.version}</version>
+    <version>${project.parent.version}</version>
 
     <name>core</name>
 
@@ -35,6 +35,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
 
@@ -76,6 +80,11 @@
             <artifactId>easyexcel</artifactId>
         </dependency>
 
+        <!--    为了测试远程调用案例才加入依赖中    -->
+        <dependency>
+            <groupId>com.ader1y</groupId>
+            <artifactId>client</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.ader1y</groupId>
             <artifactId>model</artifactId>
@@ -116,7 +125,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${version.spring-boot}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <excludes>
                         <exclude>
