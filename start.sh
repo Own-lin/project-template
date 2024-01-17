@@ -1,3 +1,4 @@
+mvn clean install -Dskiped test
 if [ -f ./bin ]; then
     rm -rf ./bin
 fi
