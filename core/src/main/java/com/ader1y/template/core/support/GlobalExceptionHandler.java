@@ -20,6 +20,12 @@ public class GlobalExceptionHandler {
     @Resource
     private ApplicationEventPublisher eventPublisher;
 
+    public void scheduleExHandle(Throwable e) {
+        String stackTrace = getStackTrace(e);
+        warningLog(e, stackTrace);
+        sendWarningEvent(ExceptionLevel.HIGHEST, stackTrace);
+    }
+
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public R<String> handle(Exception e) {
@@ -46,7 +52,7 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(value = BadRequestException.class)
-    public R<String> handle(BadRequestException e) {
+    public R<String> scheduleExHandle(BadRequestException e) {
         String stackTrace = getStackTrace(e);
         warningLog(e, stackTrace);
         sendWarningEvent(ExceptionLevel.BUSINESS, stackTrace);
@@ -84,7 +90,7 @@ public class GlobalExceptionHandler {
         LOG.info(e.getMessage());
     }
 
-    private static void warningLog(Exception e, String stackTrace){
+    private static void warningLog(Throwable e, String stackTrace){
         LOG.warn(LOG_MESSAGE, e.getMessage(), stackTrace);
     }
 
