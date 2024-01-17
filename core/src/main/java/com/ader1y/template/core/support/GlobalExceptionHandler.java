@@ -10,6 +10,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -18,6 +20,7 @@ public class GlobalExceptionHandler {
     @Resource
     private ApplicationEventPublisher eventPublisher;
 
+    @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public R<String> handle(Exception e) {
         String stackTrace = getStackTrace(e);
@@ -26,6 +29,14 @@ public class GlobalExceptionHandler {
         return R.fail(500, "哎呀 出错了～ 请等会再试吧❀");
     }
 
+    @ResponseBody
+    @ExceptionHandler(NoResourceFoundException.class)
+    public R<String> handle(NoResourceFoundException e) {
+        LOG.warn("未找到资源: {}", e.getMessage());
+        return R.fail(404, "未找到对应资源");
+    }
+
+    @ResponseBody
     @ExceptionHandler(value = BusinessException.class)
     public R<String> handle(BusinessException e) {
         //  业务异常为可预期的, 只需要记录info日志
@@ -33,6 +44,7 @@ public class GlobalExceptionHandler {
         return R.fail(e.getCodeEnum());
     }
 
+    @ResponseBody
     @ExceptionHandler(value = BadRequestException.class)
     public R<String> handle(BadRequestException e) {
         String stackTrace = getStackTrace(e);
@@ -44,6 +56,7 @@ public class GlobalExceptionHandler {
     /**
      * 对JSR-303(@Valid @Validation等)规则中的异常进行捕获
      */
+    @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public R<String> handlerEx(MethodArgumentNotValidException e){
         //  可预期异常, 只需要记录info日志
