@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     public void scheduleExHandle(Throwable e) {
         String stackTrace = getStackTrace(e);
         warningLog(e, stackTrace);
-        sendWarningEvent(ExceptionLevel.HIGHEST, stackTrace);
+        sendWarningEvent(ExceptionLevel.HIGH, e, stackTrace);
     }
 
     @ResponseBody
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     public R<String> handle(Exception e) {
         String stackTrace = getStackTrace(e);
         warningLog(e, stackTrace);
-        sendWarningEvent(ExceptionLevel.HIGHEST, stackTrace);
+        sendWarningEvent(ExceptionLevel.HIGHEST, e, stackTrace);
         return R.fail(500, "哎呀 出错了～ 请等会再试吧❀");
     }
 
@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
     public R<String> scheduleExHandle(BadRequestException e) {
         String stackTrace = getStackTrace(e);
         warningLog(e, stackTrace);
-        sendWarningEvent(ExceptionLevel.BUSINESS, stackTrace);
+        sendWarningEvent(ExceptionLevel.BUSINESS, e, stackTrace);
         return R.fail(e.getCodeEnum());
     }
 
@@ -94,8 +94,8 @@ public class GlobalExceptionHandler {
         LOG.warn(LOG_MESSAGE, e.getMessage(), stackTrace);
     }
 
-    private void sendWarningEvent(ExceptionLevel exLevel, String stackTrace){
-        eventPublisher.publishEvent(new WarningEvent(exLevel, stackTrace));
+    private void sendWarningEvent(ExceptionLevel exLevel, Throwable t, String stackTrace){
+        eventPublisher.publishEvent(new WarningEvent(exLevel, t.getMessage(), stackTrace));
     }
 
 }
