@@ -5,9 +5,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
-import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.util.ErrorHandler;
 
@@ -26,31 +24,20 @@ public class ThreadPoolConfig implements SchedulingConfigurer {
     }
 
     @Bean
-    public TaskExecutor scheduleAsyncPool() {
+    public ThreadPoolExecutor scheduleAsyncPool() {
         ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(
                 Runtime.getRuntime().availableProcessors(),
-                new ThreadFactoryBuilder()
-                        .setNameFormat("schedule-pool-%d")
-                        .build(),
                 new ThreadPoolExecutor.CallerRunsPolicy()
         );
-        return decoratorThreadPool(executor);
+        threadFactoryExceptionHandlerDecorator(executor, "schedule-pool-%d");
+        return executor;
     }
 
-    private TaskExecutor decoratorThreadPool(ScheduledThreadPoolExecutor org){
-        ConcurrentTaskScheduler exec = new ConcurrentTaskScheduler(org);
-        exec.setErrorHandler(new ScheduleExDecorator());
-        return exec;
-    }
-
-    private ThreadPoolExecutor decoratorThreadFactoryExceptionHandler(ThreadPoolExecutor org){
-        if (org.getThreadFactory() == null){
-            org.setThreadFactory(new ThreadFactoryBuilder()
-                    .setUncaughtExceptionHandler(new ScheduleExDecorator())
-                    .build());
-        }
-
-        return org;
+    private void threadFactoryExceptionHandlerDecorator(ThreadPoolExecutor org, String nameFormat) {
+        org.setThreadFactory(new ThreadFactoryBuilder()
+                .setNameFormat(nameFormat)
+                .setUncaughtExceptionHandler(new ScheduleExDecorator())
+                .build());
     }
 
     class ScheduleExDecorator implements ErrorHandler, Thread.UncaughtExceptionHandler {
