@@ -43,7 +43,7 @@ public class GiteeController {
                         mediaType.set(res.getHeaders().getContentType());
                         return res.getBody().readAllBytes();
                     } else {
-                        BadCode.GET_IMAGE_ERROR.throwEx(res.getBody());
+                        BadCode.GET_IMAGE_ERROR.throwEx(res.getStatusCode());
                     }
                     return new byte[]{};
                 });
