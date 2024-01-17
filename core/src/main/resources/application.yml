@@ -17,7 +17,7 @@ spring:
 
 # 你的数据库连接信息所在的位置
 datasource:
-  config-path: classpath:/static
+  config-path: classpath:static
 
 mybatis:
   mapper-locations:

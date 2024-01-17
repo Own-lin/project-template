@@ -4,7 +4,7 @@ spring:
 
 
 datasource:
-  config-path: classpath:/static
+  config-path: classpath:static
 
 
 LOG_PATH: /.logs
