@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
     public R<String> handle(BusinessException e) {
         //  业务异常为可预期的, 只需要记录info日志
         infoLog(e);
-        return R.fail(e.getCodeEnum());
+        return R.fail(e.getCodeEnum(), e.getMessage());
     }
 
     @ResponseBody
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
         String stackTrace = getStackTrace(e);
         warningLog(e, stackTrace);
         sendWarningEvent(ExceptionLevel.BUSINESS, e, stackTrace);
-        return R.fail(e.getCodeEnum());
+        return R.fail(e.getCodeEnum(), e.getMessage());
     }
 
     /**

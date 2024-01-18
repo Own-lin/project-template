@@ -9,7 +9,6 @@
     </parent>
 
     <artifactId>client</artifactId>
-    <version>${project.parent.version}</version>
 
     <name>client</name>
 
