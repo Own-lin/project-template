@@ -35,6 +35,10 @@ public class R<T> {
         return new R<>(code, businessCode);
     }
 
+    public static <T> R<T> fail(BaseCode baseCode, String businessCode){
+        return new R<>(baseCode.getCode(), businessCode);
+    }
+
     public static <T> R<T> fail(BaseCode baseCode){
         return new R<>(baseCode.getCode(), baseCode.getBizCode());
     }
