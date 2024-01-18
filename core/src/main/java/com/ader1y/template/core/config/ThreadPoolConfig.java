@@ -15,9 +15,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 public class ThreadPoolConfig implements SchedulingConfigurer {
 
-    @Resource
-    private GlobalExceptionHandler exceptionHandler;
-
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.setScheduler(scheduleAsyncPool());
@@ -40,7 +37,14 @@ public class ThreadPoolConfig implements SchedulingConfigurer {
                 .build());
     }
 
+    /**
+     * 异常装饰对象
+     */
     class ScheduleExDecorator implements ErrorHandler, Thread.UncaughtExceptionHandler {
+
+
+        @Resource
+        private GlobalExceptionHandler exceptionHandler;
 
         @Override
         public void uncaughtException(Thread t, Throwable e) {
