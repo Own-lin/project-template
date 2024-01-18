@@ -9,7 +9,6 @@
     </parent>
 
     <artifactId>core</artifactId>
-    <version>${project.parent.version}</version>
 
     <name>core</name>
 
