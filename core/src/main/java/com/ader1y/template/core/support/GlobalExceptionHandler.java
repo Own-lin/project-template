@@ -81,7 +81,7 @@ public class GlobalExceptionHandler {
         //  只记录日志, 不需要发送通知
         LOG.info(e.getMessage());
 
-        return R.fail(code, e.getMessage());
+        return R.fail(code);
     }
 
     private static String getStackTrace(final Throwable e){
