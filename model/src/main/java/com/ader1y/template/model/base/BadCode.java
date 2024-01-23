@@ -14,7 +14,9 @@ public enum BadCode implements BaseCode{
 
     LENGTH_LIMIT(2002, "长度不在限制内"),
 
-    EXPORT_ERROR(2003, "导出暂不可用, 请稍后再试")
+    EXPORT_ERROR(2003, "导出暂不可用, 请稍后再试"),
+
+    UN_SUPPORT_REQUEST_URL(2004, "不支持的请求路径")
 
     ;
 

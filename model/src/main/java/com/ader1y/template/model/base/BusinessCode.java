@@ -12,9 +12,17 @@ import java.text.MessageFormat;
 @Getter
 public enum BusinessCode implements BaseCode{
 
+    /**
+     * 重复数据
+     */
     DUPLICATE(1001, "已存在相同{0}"),
 
-    UN_SUPPORT_PARAM(1002, "请求参数错误: {0}")
+    /**
+     * 请求参数错误
+     */
+    UN_SUPPORT_PARAM(1002, "{0}"),
+
+    REQUEST_LIMIT(1003, "操作过快, 请不要频繁点击哦~")
 
 
     ;

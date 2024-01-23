@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -71,6 +72,16 @@ public class GlobalExceptionHandler {
         LOG.info(code.formatBizCode(source));
 
         return R.fail(code.getCode(), source);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public R<String> handlerEx(MissingServletRequestParameterException e){
+        BadCode code = BadCode.UN_SUPPORT_REQUEST_URL;
+        //  只记录日志, 不需要发送通知
+        LOG.info(e.getMessage());
+
+        return R.fail(code, e.getMessage());
     }
 
     private static String getStackTrace(final Throwable e){
