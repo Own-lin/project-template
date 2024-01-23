@@ -16,7 +16,9 @@ public enum BadCode implements BaseCode{
 
     EXPORT_ERROR(2003, "导出暂不可用, 请稍后再试"),
 
-    GET_IMAGE_ERROR(2004, "获取图片失败: {0}")
+    UN_SUPPORT_REQUEST_URL(2004, "不支持的请求路径"),
+
+    GET_IMAGE_ERROR(2005, "获取图片失败: {0}")
     ;
 
     private final int code;
