@@ -2,13 +2,12 @@ package com.ader1y.template.model.base;
 
 public class BusinessException extends BaseException{
 
-
-    public BusinessException(BaseCode baseCode) {
-        super(baseCode);
+    public BusinessException(BaseCode baseCode, Throwable cause) {
+        super(baseCode, cause);
     }
 
-    public BusinessException(BaseCode baseCode, String bizCode) {
-        super(baseCode, bizCode);
+    public BusinessException(BaseCode baseCode, String message, Throwable cause) {
+        super(baseCode, message, cause);
     }
 
 }

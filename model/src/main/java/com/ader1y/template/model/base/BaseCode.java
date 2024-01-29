@@ -9,9 +9,9 @@ public interface BaseCode {
 
     String getBizCode();
 
-    void throwEx();
+    void throwEx(Exception e);
 
-    void throwEx(Object... args);
+    void throwEx(Exception e, Object... infoArgs);
 
     default String formatBizCode(Object... args) {
         return MessageFormat.format(getBizCode(), args);

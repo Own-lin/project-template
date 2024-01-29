@@ -37,19 +37,19 @@ public enum BusinessCode implements BaseCode{
     }
 
     @Override
-    public void throwEx() {
-        throw new BusinessException(this);
+    public void throwEx(Exception source) {
+        throw new BusinessException(this, source);
     }
 
     @Override
-    public void throwEx(Object... args) {
+    public void throwEx(Exception source, Object... infoArgs) {
         String message = this.getBizCode();
         try{
-            message = MessageFormat.format(this.getBizCode(), args);
+            message = MessageFormat.format(this.getBizCode(), infoArgs);
         }catch (IllegalArgumentException ex){
-            BadCode.UN_EXPECTED.throwEx();
+            BadCode.UN_EXPECTED.throwEx(source);
         }
-        throw new BusinessException(this, message);
+        throw new BusinessException(this, message, source);
     }
 
 }

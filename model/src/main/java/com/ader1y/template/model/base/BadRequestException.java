@@ -2,12 +2,11 @@ package com.ader1y.template.model.base;
 
 public class BadRequestException extends BaseException{
 
-    public BadRequestException(BaseCode baseCode) {
-        super(baseCode);
+    public BadRequestException(BaseCode baseCode, Throwable cause) {
+        super(baseCode, cause);
     }
 
-    public BadRequestException(BaseCode baseCode, String bizCode) {
-        super(baseCode, bizCode);
+    public BadRequestException(BaseCode baseCode, String message, Throwable cause) {
+        super(baseCode, message, cause);
     }
-
 }

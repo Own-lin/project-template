@@ -51,7 +51,7 @@ public class ExcelExportUtil {
             excelWriter.finish();
             excelWriter.close();
         } catch (IOException e) {
-            BadCode.EXPORT_ERROR.throwEx();
+            BadCode.EXPORT_ERROR.throwEx(e);
         }
     }
 
@@ -71,7 +71,7 @@ public class ExcelExportUtil {
             excelWriter.finish();
             excelWriter.close();
         } catch (IOException e) {
-            BadCode.EXPORT_ERROR.throwEx();
+            BadCode.EXPORT_ERROR.throwEx(e);
         }
     }
 
