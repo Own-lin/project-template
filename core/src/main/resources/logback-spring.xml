@@ -106,6 +106,7 @@
 
     <!-- 解决SpringBootAdmin错误日志问题 -->
     <logger name="org.apache.catalina.connector.CoyoteAdapter" level="OFF"/>
+    <logger name="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver" level="OFF" />
 
 
     <root level="INFO">

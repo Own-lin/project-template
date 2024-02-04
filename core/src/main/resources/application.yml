@@ -15,15 +15,10 @@ spring:
       max-request-size: 50MB
       enabled: true
 
-# 你的数据库连接信息所在的位置
-datasource:
-  config-path: classpath:static
+LOG_PATH: /.logs
 
 mybatis:
   mapper-locations:
     - "classpath:mapper/**/*.xml"
   configuration:
     mapUnderscoreToCamelCase: true
-logging:
-  level:
-    com.ader1y.template: debug

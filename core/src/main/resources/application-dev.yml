@@ -7,7 +7,6 @@ datasource:
   config-path: classpath:static
 
 
-LOG_PATH: /.logs
 logging:
   level:
     com.ader1y.template: trace
