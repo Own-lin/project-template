@@ -26,23 +26,48 @@ public class WarningEvent {
     private String stackTrace;
 
     /**
+     * 更详细的异常堆栈
+     */
+    private String moreStackTrace;
+
+    /**
+     * 系统异常事件
+     */
+    public static WarningEvent buildSystemWarning(ExceptionLevel level, Throwable e){
+        return new WarningEvent(level, e);
+    }
+
+    /**
+     * 业务异常事件
+     */
+    public static WarningEvent buildBusinessWarning(ExceptionLevel level, Throwable e, String bizMessage){
+        return new WarningEvent(level, e, bizMessage);
+    }
+
+    public WarningEvent() {}
+
+    /**
      * 系统异常事件, 直接处理原始异常
      */
-    public WarningEvent(ExceptionLevel level, Throwable e) {
+    private WarningEvent(ExceptionLevel level, Throwable e) {
         this.level = level;
         this.sourceMessage = e.getMessage();
-        this.stackTrace = getStackTrace(e);
+        StackTraceElement[] stacks = e.getStackTrace();
+        this.stackTrace = getStackTrace(stacks, 6);
+        this.moreStackTrace = getStackTrace(stacks, 12);
     }
+
     /**
      *   业务异常事件, 需要获取业务实际异常 即上一层异常. <br></br>
      * 需要指定bizMessage(业务抽象异常中的{@link BaseCode})
      */
-
-    public WarningEvent(ExceptionLevel level, Throwable e, String bizMessage) {
+    private WarningEvent(ExceptionLevel level, Throwable e, String bizMessage) {
         this.level = level;
         this.sourceMessage = e.getCause().getMessage();
         this.bizMessage = bizMessage;
-        this.stackTrace = getStackTrace(e.getCause());
+        StackTraceElement[] stacks = e.getCause().getStackTrace();
+        this.stackTrace = getStackTrace(stacks, 6);
+        this.moreStackTrace = getStackTrace(stacks, 12);
     }
 
     public String print() {
@@ -56,10 +81,21 @@ public class WarningEvent {
                 "异常堆栈: " + stackTrace;
     }
 
-    private static String getStackTrace(final Throwable e){
+    public String detailPrint() {
+
+        return "异常等级: " + level.getTitle() +
+                "\n" +
+                "异常信息: " + sourceMessage +
+                "\n" +
+                "业务信息: " + bizMessage +
+                "\n" +
+                "异常堆栈: " + moreStackTrace;
+    }
+
+    private static String getStackTrace(StackTraceElement[] stacks, int deep){
+        if (deep < 0) deep = 0;
         StringBuilder sb = new StringBuilder();
-        StackTraceElement[] stacks = e.getStackTrace();
-        for (int i = 0; i < 6; i++){
+        for (int i = 0; i < deep; i++){
             sb.append(stacks[i].toString()).append("\n");
         }
         sb.append("......");

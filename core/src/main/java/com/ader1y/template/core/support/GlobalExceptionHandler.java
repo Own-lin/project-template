@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     private ApplicationEventPublisher eventPublisher;
 
     public void scheduleExHandle(Throwable e) {
-        WarningEvent event = new WarningEvent(ExceptionLevel.HIGH, e);
+        WarningEvent event = WarningEvent.buildSystemWarning(ExceptionLevel.HIGH, e);
         warningLog(event.print());
         sendWarningEvent(event);
     }
@@ -31,8 +31,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public R<String> handle(HttpServletResponse response, Exception e) {
-        WarningEvent event = new WarningEvent(ExceptionLevel.HIGHEST, e);
-        warningLog(event.print());
+        WarningEvent event = WarningEvent.buildSystemWarning(ExceptionLevel.HIGHEST, e);
+        warningLog(event.detailPrint());
         sendWarningEvent(event);
         setContentType(response);
         return R.fail(500, "哎呀 出错了～ 请等会再试吧❀");
@@ -58,8 +58,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = BadRequestException.class)
     public R<String> scheduleExHandle(HttpServletResponse response, BadRequestException e) {
-        WarningEvent event = new WarningEvent(ExceptionLevel.BUSINESS, e, e.getMessage());
-        warningLog(event.print());
+        WarningEvent event = WarningEvent.buildBusinessWarning(ExceptionLevel.BUSINESS, e, e.getMessage());
+        warningLog(event.detailPrint());
         sendWarningEvent(event);
         setContentType(response);
         return R.fail(e.getCodeEnum(), e.getMessage());
@@ -85,8 +85,8 @@ public class GlobalExceptionHandler {
     public R<String> handlerEx(HttpServletResponse response, MissingServletRequestParameterException e){
         BadCode code = BadCode.UN_SUPPORT_REQUEST_URL;
         //  只记录日志, 不需要发送通知
-        WarningEvent event = new WarningEvent(ExceptionLevel.MEDIUM, e, code.getBizCode());
-        warningLog(event.print());
+        WarningEvent event = WarningEvent.buildBusinessWarning(ExceptionLevel.MEDIUM, e, code.getBizCode());
+        warningLog(event.detailPrint());
         sendWarningEvent(event);
         setContentType(response);
         return R.fail(code);
