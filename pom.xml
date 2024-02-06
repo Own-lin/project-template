@@ -21,6 +21,9 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.spring.cloud>2023.0.0</version.spring.cloud>
+        <version.spring.cloud.alibaba>2022.0.0.0</version.spring.cloud.alibaba>
+        <version.skywalking.logback>9.1.0</version.skywalking.logback>
         <version.spring-boot>3.2.1</version.spring-boot>
         <version.jackson>2.16.1</version.jackson>
         <version.fastjson2>2.0.35</version.fastjson2>
@@ -52,17 +55,25 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2023.0.0</version>
+                <version>${version.spring.cloud}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>2022.0.0.0</version>
+                <version>${version.spring.cloud.alibaba}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!--    Tracing/Metric  -->
+            <dependency>
+                <groupId>org.apache.skywalking</groupId>
+                <artifactId>apm-toolkit-logback-1.x</artifactId>
+                <version>${version.skywalking.logback}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
